@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Katalog - Aurora Skincare</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+  <!-- Navigasi -->
+  <header class="bg-pink-600 text-white shadow sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto flex justify-between items-center px-5 py-4">
+      <h1 class="text-2xl font-extrabold tracking-wide">Aurora Skincare</h1>
+      <nav class="space-x-4 text-sm">
+        <a href="produkpelanggan.html" class="hover:text-yellow-300">Katalog</a>
+        <a href="tentang.html" class="hover:text-yellow-300">Tentang Kami</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Jumbotron -->
+  <section class="bg-pink-100 py-14">
+    <div class="text-center max-w-2xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-pink-700 mb-3">Temukan Produk Skincare Favoritmu</h2>
+      <p class="text-base md:text-lg text-gray-700">Perawatan kulit natural untuk hasil maksimal.</p>
+    </div>
+  </section>
+
+  <!-- Daftar Produk -->
+  <main class="py-10 px-6">
+    <div class="max-w-6xl mx-auto">
+      <h3 class="text-xl font-semibold text-pink-700 text-center mb-8">Produk Unggulan</h3>
+      <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Produk akan dimuat di sini -->
+      </div>
+    </div>
+  </main>
+
+  <!-- JavaScript Produk -->
+  <script>
+    const API_URL = "https://crud-api-production-1baf.up.railway.app/api/products";
+
+    fetch(API_URL)
+      .then(response => response.json())
+      .then(products => {
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = '';
+        products.forEach(item => {
+          const card = `
+            <div class="bg-white border rounded-xl overflow-hidden shadow hover:shadow-lg transition duration-300 flex flex-col">
+              <img src="${item.gambar}" alt="${item.nama_produk}" class="h-40 w-full object-cover">
+              <div class="p-4 flex-grow flex flex-col">
+                <h4 class="font-semibold text-lg text-pink-700 mb-1">${item.nama_produk}</h4>
+                <p class="text-sm text-gray-600 mb-1">${item.kategori}</p>
+                <p class="text-pink-600 font-bold text-xl mb-2">Rp${Number(item.harga).toLocaleString('id-ID')}</p>
+                <p class="text-sm text-gray-500 mb-1">Stok: ${item.stok}</p>
+                <p class="text-sm text-gray-500 flex-grow">${item.detail}</p>
+                <a href="https://wa.me/6285717556342?text=Halo%2C%20saya%20ingin%20membeli%20*${encodeURIComponent(item.nama_produk)}*%20seharga%20Rp${Number(item.harga).toLocaleString('id-ID')}%0AJumlah%3A%201%0ANama%3A%0AAlamat%3A" 
+                   target="_blank"
+                   class="mt-4 inline-block text-center bg-pink-600 text-white py-2 px-4 rounded hover:bg-gray-800">
+                  Pesan Sekarang
+                </a>
+              </div>
+            </div>
+          `;
+          grid.innerHTML += card;
+        });
+      })
+      .catch(error => console.error("Gagal memuat produk:", error));
+  </script>
+
+  <!-- Footer -->
+  <footer class="bg-pink-600 text-white mt-16">
+    <div class="max-w-6xl mx-auto px-5 py-6 flex flex-col sm:flex-row justify-between items-center text-sm">
+      <span>&copy; 2025 Aurora Skincare</span>
+      <div class="space-x-4 mt-2 sm:mt-0">
+        <a href="#" class="hover:underline">Kebijakan Privasi</a>
+        <a href="#" class="hover:underline">Ketentuan</a>
+        <a href="#" class="hover:underline">Hubungi Kami</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
